@@ -14,7 +14,6 @@
 <body>
 
 <h1>Jenius Visionaries</h1>
-<br>
 <style>
     p {
         font-family: Arial, Helvetica, sans-serif;
@@ -38,24 +37,21 @@
         clear: both;
     }
     .p1col {
-        width: 30%;
+        flex: 1;
     }
     .butCol {
-        width: 60%;
-        height: 400px;
-        float: right;
+       flex: 2;
     }
-    .a {
-        padding: 2%;
+    .flexbox {
+        display: flex;
     }
 
 </style>
-<br>
-            <br>
-            <br>
-<div class="container-fluid">
-    <div class="clearfix">
-        <div class="column p1col">
+    <br>
+    <br>
+    <br>
+<div class="flexbox"></div>
+        <div class="p1col">
             <p1>Our Vision:</p1>
             <p> 
                 Being able to visualize algorithms are hard. Trying to figure out which time 
@@ -66,14 +62,13 @@
             </p>
         </div>
     <!-- <div class="column" id ="container"> Yellow box</div> -->
-    <div class="butCol">
-        <a href="animate.html"><img src="sortAlgo.jpeg" width = "400" height = "400"></a>
-        <a href="index.html"><img src="comingSoon.jpeg" width = "400" height = "400"></a>
-        <br>
-        <a href="index.html"><img src="comingSoon.jpeg" width = "400" height = "400"></a>
-        <a href="index.html"><img src="comingSoon.jpeg" width = "400" height = "400"></a>
-    </div>
-</div>
+        <div class="butCol">
+            <a href="animate.html"><img src="sortAlgo.jpeg" width = "400" height = "400"></a>
+            <a href="index.html"><img src="comingSoon.jpeg" width = "400" height = "400"></a>
+            <br>
+            <a href="index.html"><img src="comingSoon.jpeg" width = "400" height = "400"></a>
+            <a href="index.html"><img src="comingSoon.jpeg" width = "400" height = "400"></a>
+        </div>
 </div>
 
 
