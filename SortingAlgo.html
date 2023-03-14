@@ -53,9 +53,33 @@
     }
 </style>
 <script>
-   function display(){
-        var userName = document.getElementById("userName").value;
-        document.getElementById("printhere").innerHTML = userName;
+    var x = document.getElementById("arrayNums");
+    x.style.display = "none";
+
+    function display(){
+        var inputSize = document.getElementById("inputSize").value;
+        // document.getElementById("printhere").innerHTML = inputSize;
+        var x = document.getElementById("ArrayInput");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.hidden = "none";
+        }
+    }
+    function run_algo(){
+        var inputNums = document.getElementById("arrayNums").value;
+        const numArray = [];
+        const textArray = inputNums.split(" ");
+        for (let i = 0; i < textArray.length; i++) {
+            numArray[i] = parseInt(textArray[i]);
+        }
+        var x = document.getElementById("showArray");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.hidden = "none";
+        }
+        document.getElementById("printhere").innerHTML = numArray;
     }
 </script>
 </head>
@@ -68,12 +92,23 @@
                 <p1>Sorting Algorithm O(n<sup>2</sup>)</p1>
                 <br>
                 <br>
-                <br>
-                
-         How many values would you like to sort? <input type="text" id="userName"> 
-		 
+                <br>   
+         How many values would you like to sort? <input type="text" id="inputSize"> 
         <button  onclick="display()">Submit</button>
-        <p id="printhere"></p>
+
+        <div id="ArrayInput" style="display:none;">
+            <br>
+            Seperate numbers with a space:
+            <br>
+            <input type="text" id="arrayNums"> 
+            <button onclick="run_algo()">Submit</button>
+        </div>
+        <br>
+        <br>
+        <div id="showArray" style="display:none;">
+            <p>Unsorted array is:</p>
+            <p id="printhere"></p>
+        </div>
                   
             </nav>
             <nav>
