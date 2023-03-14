@@ -31,7 +31,7 @@
     }
     
     p1 {
-      font-size: 20px;
+      font-size: 25px;
     }
 
     img{
@@ -44,7 +44,20 @@
         flex-direction: column;
       }
     }
+/* Temp place holder for graph */
+    #container {
+        width: 100%;
+        height: 400px;
+        padding-right: 20px;
+        background: yellow;
+    }
 </style>
+<script>
+   function display(){
+        var userName = document.getElementById("userName").value;
+        document.getElementById("printhere").innerHTML = userName;
+    }
+</script>
 </head>
     <body>
         <h1>Jeanius Visionaries</h1>
@@ -52,26 +65,20 @@
         <br>
         <section>
             <nav>
-                <p1>Our Vision:</p1>
-                <p> 
-                    Being able to visualize algorithms are hard. Trying to figure out which time 
-                    complexity is faster is even harder. We at Jenius Visionaries hope to negate 
-                    this issue for our future and present programmers. This will not onlv visualize 
-                    the algorithm, but will tell you how long time complexity is, execution of the 
-                    algorithm, and even save your past inputs.
-                </p>
+                <p1>Sorting Algorithm O(n<sup>2</sup>)</p1>
+                <br>
+                <br>
+                <br>
+                
+         How many values would you like to sort? <input type="text" id="userName"> 
+		 
+        <button  onclick="display()">Submit</button>
+        <p id="printhere"></p>
+                  
             </nav>
             <nav>
-                <!-- 100% looks nice but needs padding to work -->
-                <a href="SortingAlgo.html"><img src="sortAlgo.jpeg" width = 80%></a> 
-                <a href="index.html"><img src="comingSoon.jpeg" width = 80%></a>
+                <div id ="container"></div>
             </nav>
-            <nav>
-                <a href="index.html"><img src="comingSoon.jpeg" width = 80%></a>
-                <a href="index.html"><img src="comingSoon.jpeg" width = 80%></a>
-            </nav>
-      
-      
         </section>
     
     </body>
