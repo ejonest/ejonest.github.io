@@ -55,12 +55,9 @@
 <script>
     var x = document.getElementById("arrayNums");
     x.style.display = "none";
-    var size;
-    let intSize = 0;
 
     function display(){
-        size = document.getElementById("inputSize").value;
-        let intSize = parseInt(size);
+        var inputSize = document.getElementById("inputSize").value;
         // document.getElementById("printhere").innerHTML = inputSize;
         var x = document.getElementById("ArrayInput");
         if (x.style.display === "none") {
@@ -74,21 +71,11 @@
         var inputNums = document.getElementById("arrayNums").value;
         const numArray = [];
         const textArray = inputNums.split(" ");
-        for (let i = 0; i < size; i++) {
+        for (let i = 0; i < textArray.length; i++) {
             numArray[i] = parseInt(textArray[i]);
         }
-        //document.getElementById("printError").innerHTML = "Too many entries. Will only sort the first " + " Entries<br>";
-        if (textArray.length > size) {
-            var w = document.getElementById("showError");
-            w.style.display = "block";
-            document.getElementById("printError").innerHTML = "Too many entries. Will only sort the first " + size + " Entries<br>";
-        } else if (textArray.length < size) {
-            var w = document.getElementById("showError");
-            w.style.display = "block";
-            document.getElementById("printError").innerHTML = "Too few entries. Expected " + size + ". Received " + textArray.length + ". Will sort what you have entered<br>";
-            size = textArray.length;
-        }
         var x = document.getElementById("showArray");
+        // Finish adding this in
         var y = document.getElementById("showSteps");
         if (x.style.display === "none") {
             x.style.display = "block";
@@ -97,6 +84,7 @@
             x.style.hidden = "none";
             y.style.hidden = "none";
         }
+    
         document.getElementById("printhere").innerHTML = numArray;
 
         algorithm_bubble(numArray)
@@ -105,16 +93,14 @@
     // Bubble Sort Algorithm - O(n^2)
     function algorithm_bubble(array) {
         let stepsText = "";
-        let index = 1;
-        for (var i = 0; i < size; i++) {
-            for (var j = 0; j < (size - 1 - i); j++) {
+        for (var i = 0; i < array.length; i++) {
+            for (var j = 0; j < (array.length - 1 - i); j++) {
                 if (array[j] > array[j + 1]) {
                     var temp = array[j];
                     array[j] = array[j + 1];
                     array[j + 1] = temp;
+                    stepsText += (i+1) + ".) " + array + "<br>"
                 }
-                stepsText += index + ".) " + array + "<br>"
-                index += 1;
             }
         }
         document.getElementById("sortedArrayPrint").innerHTML = array;
@@ -128,8 +114,15 @@
         <br>
         <section>
             <nav>
-                <p1>Bubble Sort (O(n<sup>2</sup>))</p1>
+                <p1>Third Highest Element Finder</p1>
                 <br>
+                <form>
+                        <input type="radio" id="bubble" name= "test" value="bubble">
+                        <label for="html">Bubble Sort O(n<sup>2</sup>)</label>
+                        <br>
+                        <input type="radio" id="alter" name= "test" value="alter">
+                        <label for="css">Other Algo Bubble Sort O(nlog(n))</label><br>
+                    </form> '
                 <br>
                 <br>   
          How many values would you like to sort? <input type="text" id="inputSize"> 
@@ -144,10 +137,6 @@
         </div>
         <br>
         <br>
-        <div id="showError" style="display:none;">
-            <p id="printError"></p>
-        </div>
-
         <div id="showArray" style="display:none;">
             <p>Unsorted array is:</p>
             <p id="printhere"></p>
