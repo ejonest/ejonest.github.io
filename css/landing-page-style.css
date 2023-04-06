@@ -13,14 +13,14 @@ body {
 p3 {
     font-family: Jura;
     font-weight: 400;
-    font-size: 500px;
+    font-size: 300px;
 }
 
 p4 {
     font-family: Inter;
     font-weight: 500;
-    font-size: 200px;
-    line-height: 242.05px;
+    font-size: 50px;
+    line-height: 50px;
 }
 
 section {
@@ -41,6 +41,9 @@ p1 {
 
 img {
     padding-bottom: 20px;
+    /* width: 1662px;
+    height: 548px;
+    border-radius: 285px; */
 }
 
 @media (max-width: 600px) {
