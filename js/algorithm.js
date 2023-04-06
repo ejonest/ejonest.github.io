@@ -26,6 +26,7 @@ function runAlgorithm(arrayFormId, arraySizeFormId, errorBoxId, errorTextId, dis
     //             algorithmType = radioButton[i].value;
     //         }
     //     }
+    
     document.getElementById(errorBoxId).style.display = "none";
 
     // Read text from array form.
