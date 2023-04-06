@@ -1,13 +1,33 @@
+window.onload = function() {
+    let slider = document.getElementById("inputSize");
+    let output = document.getElementById("inputSizeValue");
+    output.innerHTML = slider.value;
+
+    slider.oninput = function() {
+      output.innerHTML = this.value;
+    }
+}
+
 function display(arrayFormId) {
     let arrayForm = document.getElementById(arrayFormId);
     if (arrayForm.style.display === "none") {
         arrayForm.style.display = "block";
     } else {
-        arrayForm.style.hidden = "none";
+        arrayForm.style.display = "none";
     }
 }
 
 function runAlgorithm(arrayFormId, arraySizeFormId, errorBoxId, errorTextId, displayBoxId, displayTextId, unsortedArrayTextID, sortedArrayTextId, sortedArrayStepId) {
+    // Reset error box display.
+    var algorithmType;
+    var radioButton = document.getElementsByName('algoSelect');
+        for(i = 0; i < radioButton.length; i++) {
+            if(radioButton[i].checked) {
+                algorithmType = radioButton[i].value;
+            }
+        }
+    document.getElementById(errorBoxId).style.display = "none";
+
     // Read text from array form.
     const arrayFormValue = document.getElementById(arrayFormId).value.split(" ");
 
@@ -23,9 +43,9 @@ function runAlgorithm(arrayFormId, arraySizeFormId, errorBoxId, errorTextId, dis
         errorBox.style.display = "block";
 
         if (arrayFormValue.length > arraySize) {
-            document.getElementById(errorTextId).innerHTML = "Too many entries. Will only sort the first " + arraySize + " entries.<br>";
+            document.getElementById(errorTextId).innerHTML = "Received more entries than expected (Expected: " + arraySize + ", Received: " + arrayFormValue.length + ") <br>Will only sort the first " + arraySize + " entries.<br>";
         } else if (arrayFormValue.length < arraySize) {
-            document.getElementById(errorTextId).innerHTML = "Too few entries. Expected " + arraySize + ". Received " + arrayFormValue.length + ". Will sort what you have entered.<br>";
+            document.getElementById(errorTextId).innerHTML = "Received less entries than expected (Expected: " + arraySize + ", Received: " + arrayFormValue.length + ") <br>Will sort the given entries.<br>";
             arraySize = arrayFormValue.length;
         }
     }
@@ -36,17 +56,20 @@ function runAlgorithm(arrayFormId, arraySizeFormId, errorBoxId, errorTextId, dis
         displayBox.style.display = "block";
         displayText.style.display = "block";
     } else {
-        displayBox.style.hidden = "none";
-        displayText.style.hidden = "none";
+        displayBox.style.display = "none";
+        displayText.style.display = "none";
     }
     document.getElementById(unsortedArrayTextID).innerHTML = array;
 
-    if (document.getElementById('bubble').checked) {
-        sorted = bubbleSort(array, array.length, sortedArrayTextId, sortedArrayStepId);
-    } else {
+    let sorted = null;
+    if (algorithmType == "bubble") {
+        sorted = bubbleSort(array, arraySize, sortedArrayTextId, sortedArrayStepId);
+    } else if (algorithmType == "merge") {
         sorted = mergeSort(array, sortedArrayTextId, sortedArrayStepId);
+        document.getElementById("thirdLargestPrint").innerHTML = sorted[sorted.length - 3];
     }
-    
+
+    document.getElementById(sortedArrayTextId).innerHTML = sorted;
 }
 
 // Bubble Sort Algorithm - O(n^2)
@@ -66,6 +89,8 @@ function bubbleSort(array, arraySize, sortedArrayTextId, sortedArrayStepId) {
     }
     document.getElementById(sortedArrayTextId).innerHTML = array;
     document.getElementById(sortedArrayStepId).innerHTML = stepsText;
+
+    return array;
 }
 
 // Merge Sort Algorithm - O(nlogn)
