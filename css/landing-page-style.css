@@ -8,6 +8,7 @@ body {
     background-image: linear-gradient(#FFFFFF, #4AE5EF);
     background-size: cover;
     background-position: center center;
+    background-repeat: no-repeat;
 }
 p3 {
     font-family: Jura;
