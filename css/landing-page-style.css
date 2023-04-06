@@ -7,6 +7,18 @@ body {
     background-color: #2A4476; /* For browsers that do not support gradients */
     background-image: linear-gradient(#FFFFFF, #4AE5EF);
 }
+p3 {
+    font-family: Jura;
+    font-weight: 400;
+    font-size: 100px;
+}
+
+p4 {
+    font-family: Inter;
+    font-weight: 500;
+    font-size: 40px;
+    line-height: 48px;
+}
 
 section {
     display: -webkit-flex;

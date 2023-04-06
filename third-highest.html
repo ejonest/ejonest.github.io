@@ -19,40 +19,37 @@
     <br>
     <section>
         <nav>
-            <p1>Third Highest Element Finder</p1>
-            <br>
-            <form>
-                <input type="radio" id="bubble" name="test" value="bubble">
-                <label for="html">Bubble Sort O(n<sup>2</sup>)</label>
-                <br>
-                <input type="radio" id="alter" name="test" value="alter">
-                <label for="css">Other Algo Bubble Sort O(nlog(n))</label><br>
-            </form>
+            <p1>Third Largest Element Finder</p1>
             <br>
             <br>
-            How many values would you like to sort?
-            <input type="text" id="inputSize">
-            <button onclick="display('ArrayInput')">Submit</button>
-
+            Select the array size:
+            <br>
+            <div class="slidercontainer">
+                <input type="range" min="4" max="10" value="4" class="slider" id="inputSize">
+                Value: <span id="inputSizeValue"></span>
+                <button onclick="display('ArrayInput')">Submit</button>
+            </div>
             <div id="ArrayInput" style="display:none;">
                 <br>
-                Seperate numbers with a space:
+                Input the array (separate with spaces):
                 <br>
                 <input type="text" id="arrayNums">
-                <button onclick="runAlgorithm('arrayNums', 'inputSize', 'showError', 'printError', 'showArray', 'showSteps', 'printhere', 'sortedArrayPrint', 'stepPrint')">Submit</button>
+                <button id="third" onclick="runAlgorithm('arrayNums', 'inputSize', 'showError', 'printError', 'showArray', 'showSteps', 'printhere', 'sortedArrayPrint', 'stepPrint')">Submit</button>
             </div>
             <br>
-            <br>
+            <div id="showError" style="display:none;">
+                <p id="printError"></p>
+            </div>
             <div id="showArray" style="display:none;">
-                <p>Unsorted array is:</p>
+                <p>Unsorted array:</p>
                 <p id="printhere"></p>
-                <p>Sorted array is:</p>
+                <p>Sorted array:</p>
                 <p id="sortedArrayPrint"></p>
+                <p>Third largest element:</p>
+                <p id="thirdLargestPrint"></p>
             </div>
             <br>
             <br>
-
-
         </nav>
         <nav>
             <!-- <div id ="container"></div> -->
