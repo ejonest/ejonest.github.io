@@ -105,10 +105,13 @@ function mergeSort(array, sortedArrayTextId, sortedArrayStepId) {
     return merge(mergeSort(leftArray, sortedArrayTextId, sortedArrayStepId), mergeSort(array, sortedArrayTextId, sortedArrayStepId), sortedArrayTextId, sortedArrayStepId);
 }
 
+let stepsText = "";
+
 function merge(leftArray, rightArray, sortedArrayTextId, sortedArrayStepId) {
     let array = []
-    let stepsText = "";
+    // let stepsText = "";
     let index = 1;
+    stepsText += "Left: " + leftArray + " Right: " + rightArray + " Merge: ";
 
     while (leftArray.length && rightArray.length) {
         if (leftArray[0] < rightArray[0]) {
@@ -118,11 +121,17 @@ function merge(leftArray, rightArray, sortedArrayTextId, sortedArrayStepId) {
         }
 
         let intermediateArray = [...array, ...leftArray, ...rightArray];
-        stepsText += index + ".) " + intermediateArray + "<br>";
-        index += 1;
+        // stepsText += index + ".) " + intermediateArray + "<br>";
+        // index += 1;
     }
-
     array = [...array, ...leftArray, ...rightArray];
+
+    // stepsText +=  + intermediateArray + "<br>";
+    for (let i = 0; array.length > i; i++) {
+        stepsText += array[i] + " ";
+    }
+    stepsText += "<br>";
+
 
     document.getElementById(sortedArrayTextId).innerHTML = array;
     document.getElementById(sortedArrayStepId).innerHTML = stepsText;
