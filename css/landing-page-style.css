@@ -16,14 +16,14 @@ html {
 p3 {
     font-family: Jura;
     font-weight: 400;
-    font-size: 150px;
+    font-size: 100px;
 }
 
 p4 {
     font-family: Inter;
     font-weight: 500;
-    font-size: 30px;
-    line-height: 30px;
+    font-size: 20px;
+    line-height: 40px;
 }
 
 section {
