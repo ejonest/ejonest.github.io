@@ -19,13 +19,13 @@ function display(arrayFormId) {
 
 function runAlgorithm(arrayFormId, arraySizeFormId, errorBoxId, errorTextId, displayBoxId, displayTextId, unsortedArrayTextID, sortedArrayTextId, sortedArrayStepId) {
     // Reset error box display.
-    var algorithmType;
-    var radioButton = document.getElementsByName('algoSelect');
-        for(i = 0; i < radioButton.length; i++) {
-            if(radioButton[i].checked) {
-                algorithmType = radioButton[i].value;
-            }
-        }
+    var algorithmType = "merge";
+    // var radioButton = document.getElementsByName('algoSelect');
+    //     for(i = 0; i < radioButton.length; i++) {
+    //         if(radioButton[i].checked) {
+    //             algorithmType = radioButton[i].value;
+    //         }
+    //     }
     document.getElementById(errorBoxId).style.display = "none";
 
     // Read text from array form.
