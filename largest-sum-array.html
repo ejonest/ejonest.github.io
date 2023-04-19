@@ -19,34 +19,42 @@
     <br>
     <section>
         <nav>
-            <p1>Third Largest Element Finder O(nlog(n))</p1>
+            <p1>Sorting Algorithm (Merge Sort)</p1>
             <br>
             <br>
-            Select the array size:
-            <br>
+            <p2>Select the array size:</p2>
             <div class="slidercontainer">
-                <input type="range" min="3" max="10" value="3" class="slider" id="inputSize">
+                <input type="range" min="2" max="5" value="2" class="slider" id="inputSize">
                 Value: <span id="inputSizeValue"></span>
                 <button onclick="display('ArrayInput')">Submit</button>
             </div>
+            <br>
+            <p2>Select the algorithm:</p2>
+            <form>
+                <input type="radio" id="bubble" name= "algoSelect" value="naiveMaxSum">
+                <label for="html">Naive O(n<sup>2</sup>)</label>
+                <br>
+                <!-- <input type="radio" id="alter" name= "algoSelect" value="kadane">
+                <label for="css">Kadane O(n))</label><br> -->
+            </form>
+            <br>
             <div id="ArrayInput" style="display:none;">
                 <br>
-                Input the array (separate with commas):
+                <p2>Input the array (separate with commas):</p2>
                 <br>
                 <input type="text" id="arrayNums">
-                <button id="third" onclick="runAlgorithm('arrayNums', 'inputSize', 'showError', 'printError', 'showArray', 'showSteps', 'printhere', 'sortedArrayPrint', 'stepPrint')">Submit</button>
+                <button onclick="runAlgorithm('naiveMaxSum', 'arrayNums', 'inputSize', 'showError', 'printError', 'showArray', 'showSteps', 'printhere', 'MaxSumPrint', 'stepPrint')">Submit</button>
             </div>
+            <br>
             <br>
             <div id="showError" style="display:none;">
                 <p id="printError"></p>
             </div>
             <div id="showArray" style="display:none;">
-                <p>Unsorted array:</p>
+                <p>Input array is:</p>
                 <p id="printhere"></p>
-                <p>Sorted array:</p>
-                <p id="sortedArrayPrint"></p>
-                <p>Third largest element:</p>
-                <p id="thirdLargestPrint"></p>
+                <p>Max subarray is:</p>
+                <p id="MaxSumPrint"></p>
             </div>
             <br>
             <br>
@@ -59,7 +67,6 @@
             </div>
         </nav>
     </section>
-
 </body>
 
 </html>

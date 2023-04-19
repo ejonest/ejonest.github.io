@@ -1,9 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Jura:wght@300&display=swap');
 * {
     box-sizing: border-box;
-}
-
-body {
-    font-family: Arial, Helvetica, sans-serif;
 }
 html {
     background-color: #2A4476;
@@ -13,17 +10,9 @@ html {
     background-repeat: no-repeat;
     height: 100%;
 }
-p3 {
-    font-family: Jura;
-    font-weight: 400;
-    font-size: 100px;
-}
 
-p4 {
-    font-family: Inter;
-    font-weight: 500;
-    font-size: 20px;
-    line-height: 40px;
+body {
+    font-family: 'Jura', sans-serif;
 }
 
 section {
@@ -44,9 +33,6 @@ p1 {
 
 img {
     padding-bottom: 20px;
-    /* width: 1662px;
-    height: 548px;
-    border-radius: 285px; */
 }
 
 @media (max-width: 600px) {

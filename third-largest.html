@@ -6,7 +6,7 @@
     <title>Jeanius Visionaries</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/algorithm-page-style.css">
     <link rel="icon" type="image/x-icon" href="assets/icons/icon.png">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -19,17 +19,18 @@
     <br>
     <section>
         <nav>
-            <p1>Sorting Algorithm (Merge Sort)</p1>
+            <p1>Third Largest Element Finder</p1>
             <br>
             <br>
-            <p2>Select the array size:</p2>
+            Select the array size:
+            <br>
             <div class="slidercontainer">
-                <input type="range" min="2" max="5" value="2" class="slider" id="inputSize">
+                <input type="range" min="3" max="10" value="3" class="slider" id="inputSize">
                 Value: <span id="inputSizeValue"></span>
                 <button onclick="display('ArrayInput')">Submit</button>
             </div>
-            <br>
             <p2>Select the algorithm:</p2>
+            <br>
             <form>
                 <input type="radio" id="bubble" name= "algoSelect" value="bubble">
                 <label for="html">Bubble Sort O(n<sup>2</sup>)</label>
@@ -40,21 +41,22 @@
             <br>
             <div id="ArrayInput" style="display:none;">
                 <br>
-                <p2>Input the array (separate with commas):</p2>
+                Input the array (separate with commas):
                 <br>
                 <input type="text" id="arrayNums">
-                <button onclick="runAlgorithm('sort', 'arrayNums', 'inputSize', 'showError', 'printError', 'showArray', 'showSteps', 'printhere', 'sortedArrayPrint', 'stepPrint')">Submit</button>
+                <button onclick="runAlgorithm('thirdHighest', 'arrayNums', 'inputSize', 'showError', 'printError', 'showArray', 'showSteps', 'printhere', 'sortedArrayPrint', 'stepPrint')">Submit</button>
             </div>
-            <br>
             <br>
             <div id="showError" style="display:none;">
                 <p id="printError"></p>
             </div>
             <div id="showArray" style="display:none;">
-                <p>Unsorted array is:</p>
+                <p>Unsorted array:</p>
                 <p id="printhere"></p>
-                <p>Sorted array is:</p>
+                <p>Sorted array:</p>
                 <p id="sortedArrayPrint"></p>
+                <p>Third largest element:</p>
+                <p id="thirdLargestPrint"></p>
             </div>
             <br>
             <br>
@@ -67,6 +69,7 @@
             </div>
         </nav>
     </section>
+
 </body>
 
 </html>
