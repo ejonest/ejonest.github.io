@@ -20,17 +20,17 @@ function display(arrayFormId) {
 function runAlgorithm(arrayFormId, arraySizeFormId, errorBoxId, errorTextId, displayBoxId, displayTextId, unsortedArrayTextID, sortedArrayTextId, sortedArrayStepId) {
     // Reset error box display.
     var algorithmType = "merge";
-    // var radioButton = document.getElementsByName('algoSelect');
-    //     for(i = 0; i < radioButton.length; i++) {
-    //         if(radioButton[i].checked) {
-    //             algorithmType = radioButton[i].value;
-    //         }
-    //     }
+    var radioButton = document.getElementsByName('algoSelect');
+        for(i = 0; i < radioButton.length; i++) {
+            if(radioButton[i].checked) {
+                algorithmType = radioButton[i].value;
+            }
+        }
     
     document.getElementById(errorBoxId).style.display = "none";
 
     // Read text from array form.
-    const arrayFormValue = document.getElementById(arrayFormId).value.split(" ");
+    const arrayFormValue = document.getElementById(arrayFormId).value.split(",");
 
     // Read integer from size form.
     let arraySize = parseInt(document.getElementById(arraySizeFormId).value);
@@ -93,7 +93,7 @@ function bubbleSort(array, arraySize, sortedArrayTextId, sortedArrayStepId) {
 
     return array;
 }
-
+let index = 1;
 // Merge Sort Algorithm - O(nlogn)
 function mergeSort(array, sortedArrayTextId, sortedArrayStepId) {
     if (array.length <= 1) {
@@ -107,12 +107,13 @@ function mergeSort(array, sortedArrayTextId, sortedArrayStepId) {
 }
 
 let stepsText = "";
+let stepIndex = 1;
 
 function merge(leftArray, rightArray, sortedArrayTextId, sortedArrayStepId) {
     let array = []
     // let stepsText = "";
-    let index = 1;
-    stepsText += "Left: " + leftArray + " Right: " + rightArray + " Merge: ";
+    
+    stepsText += stepIndex + ".) Left: " + leftArray + " Right: " + rightArray + " Merge: ";
 
     while (leftArray.length && rightArray.length) {
         if (leftArray[0] < rightArray[0]) {
@@ -136,6 +137,8 @@ function merge(leftArray, rightArray, sortedArrayTextId, sortedArrayStepId) {
 
     document.getElementById(sortedArrayTextId).innerHTML = array;
     document.getElementById(sortedArrayStepId).innerHTML = stepsText;
+
+    stepIndex += 1;
     
     return array;
 }
