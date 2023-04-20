@@ -132,7 +132,7 @@ function merge(leftArray, rightArray, sortedArrayTextId, sortedArrayStepId) {
     let array = []
     // let stepsText = "";
     let index = 1;
-    stepsText += stepIndex + ".) Left: " + leftArray + " Right: " + rightArray + " Merge: ";
+    stepsText += stepIndex + ".) Left: " + leftArray + " Right: " + rightArray + "<br>Merge: ";
 
     while (leftArray.length && rightArray.length) {
         if (leftArray[0] < rightArray[0]) {
@@ -163,29 +163,70 @@ function merge(leftArray, rightArray, sortedArrayTextId, sortedArrayStepId) {
 
 // Kadane's Algorithm
 function naiveMaxSum(array, arrayStepId) {
-    var maxSubarraySum = Number.MIN_VALUE;
-    var maxSubarrayElements = [];
-    let stepsIndex = 1;
-    let stepsText = ""
+    // var maxSubarraySum = Number.MIN_VALUE;
+    // var maxSubarrayElements = [];
+    // let stepsIndex = 1;
+    // let stepsText = ""
+    // let lastSum = maxSubarraySum;
 
-    for (let i = 0; i < array.length; i++) {
-        let currentSubarraySum = 0;
-        let currentSubarrayElements = [];
+    // for (let i = 0; i < array.length; i++) {
+    //     let currentSubarraySum = 0;
+    //     let currentSubarrayElements = [];
         
-        for (let j = i; j < array.length; j++) {
-            currentSubarrayElements.push(array[j]);
-            currentSubarraySum += array[j];
+    //     for (let j = i; j < array.length; j++) {
+    //         currentSubarrayElements.push(array[j]);
+    //         currentSubarraySum += array[j];
 
-            if (currentSubarraySum > maxSubarraySum) {
-                maxSubarraySum = currentSubarraySum;
-                maxSubarrayElements = currentSubarrayElements;
-                stepsText += stepsIndex + ".) Maximum Contiguous Sum: " + maxSubarraySum + "<br>";
+    //         if (currentSubarraySum > maxSubarraySum) {
+    //             maxSubarraySum = currentSubarraySum;
+    //             if (lastSum < currentSubarraySum) {
+    //                 maxSubarrayElements = currentSubarrayElements;
+    //             }
+    //             // stepsText += stepsIndex + ".) Maximum Contiguous Sum: " + maxSubarraySum + "<br>" + 
+    //             // "Max Array: " + maxSubarrayElements + " || Current Array: " + maxSubarrayElements + "<br><br>";
+    //         }
+    //         if (stepsIndex <= array.length) {
+    //             stepsText += stepsIndex + ".) Maximum Contiguous Sum: " + maxSubarraySum + "<br>" + 
+    //                 "Max Array: " + lastSum/*maxSubarrayElements*/ + " || Current Array: " + currentSubarraySum/*maxSubarrayElements*/ + "<br><br>";
+    //             stepsIndex += 1;
+    //         }
+    //         lastSum = currentSubarraySum;
+    //     }
+    // }
+
+    // document.getElementById(arrayStepId).innerHTML = stepsText;
+
+    // return maxSubarrayElements;
+    var best_nums = [];
+    let max_sum = array[0];
+    let temp_sum = 0;
+    let e = 0;
+    let b = 0;
+    let stepsText = "";
+    let stepsIndex = 1;
+    let maxArray = [];
+    let tempArray = [];
+
+    for(let i = 0; i < array.length; ++i) {
+        let tempArray = [];
+        for(let j = i; j < array.length; ++j) {
+            temp_sum += array[j];
+            tempArray.push(array[j]);
+            if (temp_sum > max_sum) {
+                max_sum = temp_sum;
+                e = i;
+                b = j;
+                maxArray = tempArray;
             }
+            stepsText += stepsIndex + ".) Maximum Contiguous Sum: " + max_sum + "<br>" + 
+                /*"Max Array: " + maxArray + " || */ "Current Array: " + tempArray + "<br><br>";
             stepsIndex += 1;
         }
+        temp_sum = 0;
     }
-
+    for (let i = e; i <= b; ++i) {
+        best_nums.push(array[i]);
+    }
     document.getElementById(arrayStepId).innerHTML = stepsText;
-
-    return maxSubarrayElements;
+    return best_nums;
 }
