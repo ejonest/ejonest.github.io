@@ -133,7 +133,7 @@ function mergeSort(array, sortedArrayTextId, sortedArrayStepId) {
 
 function merge(leftArray, rightArray, sortedArrayTextId, sortedArrayStepId) {
     let array = []
-    stepsTextMerge += stepIndexMerge + ".) Left: " + leftArray + " Right: " + rightArray + " Merge: ";
+    stepsTextMerge += stepIndexMerge + ".) Left: " + leftArray + " Right: " + rightArray + "<br>Merge: ";
 
     while (leftArray.length && rightArray.length) {
         if (leftArray[0] < rightArray[0]) {
