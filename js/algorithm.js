@@ -165,7 +165,12 @@ function threeVariable(array, arrayStepId) {
     let stepsIndex = 1;
 
     for (let i = 0; i < array.length; i++) {
-        stepsText += stepsIndex + ".) Third Largest: " + thirdLargest + "<br>";
+        if (thirdLargest != Number.MIN_VALUE) {
+            stepsText += stepsIndex + ".) Third Largest: " + thirdLargest + "<br>";
+        } else {
+            stepsText += stepsIndex + ".) Third Largest: NaN <br>";
+        }
+        
 
         if (array[i] > largest) {
             thirdLargest = secondLargest;
