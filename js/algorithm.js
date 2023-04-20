@@ -17,7 +17,7 @@ function display(arrayFormId) {
     }
 }
 
-function runAlgorithm(page, arrayFormId, arraySizeFormId, errorBoxId, errorTextId, displayBoxId, displayTextId, unsortedArrayTextID, sortedArrayTextId, sortedArrayStepId) {
+function runAlgorithm(page, arrayFormId, arraySizeFormId, errorBoxId, errorTextId, displayBoxId, displayTextId, unsortedArrayTextID, sortedArrayTextId, sortedArrayStepId, extraDisplayBoxId) {
     // Reset error box display.
     var algorithmType = null;
     var radioButton = document.getElementsByName('algoSelect');
@@ -43,9 +43,9 @@ function runAlgorithm(page, arrayFormId, arraySizeFormId, errorBoxId, errorTextI
         errorBox.style.display = "block";
 
         if (arrayFormValue.length > arraySize) {
-            document.getElementById(errorTextId).innerHTML = "Received more entries than expected (Expected: " + arraySize + ", Received: " + arrayFormValue.length + ") <br>Will only sort the first " + arraySize + " entries.<br>";
+            document.getElementById(errorTextId).innerHTML = "Received more entries than expected (Expected: " + arraySize + ", Received: " + arrayFormValue.length + ") <br>Will only use the first " + arraySize + " entries.<br>";
         } else if (arrayFormValue.length < arraySize) {
-            document.getElementById(errorTextId).innerHTML = "Received less entries than expected (Expected: " + arraySize + ", Received: " + arrayFormValue.length + ") <br>Will sort the given entries.<br>";
+            document.getElementById(errorTextId).innerHTML = "Received less entries than expected (Expected: " + arraySize + ", Received: " + arrayFormValue.length + ") <br>Will use the given entries.<br>";
             arraySize = arrayFormValue.length;
         }
     }
@@ -68,26 +68,29 @@ function runAlgorithm(page, arrayFormId, arraySizeFormId, errorBoxId, errorTextI
             break;
         case "merge":
             algorithmArray = mergeSort(array, sortedArrayTextId, sortedArrayStepId);
+            if (page == "thirdHighest") {
+                document.getElementById("thirdLargestPrint").innerHTML = algorithmArray[algorithmArray.length - 3];
+                document.getElementById(extraDisplayBoxId).style.display = "block";
+            }
             break;
             // changed the name from kadane to be more representaive of the algo
             //should alter the function name as well
         case "naiveMaxSum":
             algorithmArray = naiveMaxSum(array, sortedArrayStepId);
+            document.getElementById("MaxSumPrint").innerHTML = algorithmArray;
+            break;
+        case "threeVariable":
+            algorithmArray = threeVariable(array, sortedArrayStepId);
+            displayBox.style.display = "none";
+            document.getElementById("thirdLargestPrint").innerHTML = algorithmArray;
+            document.getElementById(extraDisplayBoxId).style.display = "block";
             break;
         default:
             document.getElementById(errorTextId).innerHTML = "Please select an algorithm.";
             document.getElementById(errorBoxId).style.display = "block";
             break;
     }
-
-    switch (page) {
-        case "thirdHighest":
-            document.getElementById("thirdLargestPrint").innerHTML = algorithmArray[algorithmArray.length - 3];
-            break;
-        case "naiveMaxSum":
-            document.getElementById("MaxSumPrint").innerHTML = algorithmArray;
-    }
-
+    
     document.getElementById(sortedArrayTextId).innerHTML = algorithmArray;
 }
 
@@ -111,8 +114,10 @@ function bubbleSort(array, arraySize, sortedArrayTextId, sortedArrayStepId) {
 
     return array;
 }
+
 //for step output
-let stepIndex = 1;
+let stepIndexMerge = 1;
+let stepsTextMerge = "";
 
 // Merge Sort Algorithm - O(nlogn)
 function mergeSort(array, sortedArrayTextId, sortedArrayStepId) {
@@ -126,13 +131,9 @@ function mergeSort(array, sortedArrayTextId, sortedArrayStepId) {
     return merge(mergeSort(leftArray, sortedArrayTextId, sortedArrayStepId), mergeSort(array, sortedArrayTextId, sortedArrayStepId), sortedArrayTextId, sortedArrayStepId);
 }
 
-let stepsText = "";
-
 function merge(leftArray, rightArray, sortedArrayTextId, sortedArrayStepId) {
     let array = []
-    // let stepsText = "";
-    let index = 1;
-    stepsText += stepIndex + ".) Left: " + leftArray + " Right: " + rightArray + "<br>Merge: ";
+    stepsTextMerge += stepIndexMerge + ".) Left: " + leftArray + " Right: " + rightArray + " Merge: ";
 
     while (leftArray.length && rightArray.length) {
         if (leftArray[0] < rightArray[0]) {
@@ -140,25 +141,49 @@ function merge(leftArray, rightArray, sortedArrayTextId, sortedArrayStepId) {
         } else {
             array.push(rightArray.shift());
         }
-
-        let intermediateArray = [...array, ...leftArray, ...rightArray];
-        // stepsText += index + ".) " + intermediateArray + "<br>";
-        // index += 1;
     }
     array = [...array, ...leftArray, ...rightArray];
 
-    // stepsText +=  + intermediateArray + "<br>";
     for (let i = 0; array.length > i; i++) {
-        stepsText += array[i] + " ";
+        stepsTextMerge += array[i] + " ";
     }
-    stepsText += "<br>";
-
+    stepsTextMerge += "<br>";
 
     document.getElementById(sortedArrayTextId).innerHTML = array;
-    document.getElementById(sortedArrayStepId).innerHTML = stepsText;
-    stepIndex += 1;
+    document.getElementById(sortedArrayStepId).innerHTML = stepsTextMerge;
+    stepIndexMerge += 1;
 
     return array;
+}
+
+function threeVariable(array, arrayStepId) {
+    let largest = Number.MIN_VALUE;
+    let secondLargest = Number.MIN_VALUE;
+    let thirdLargest = Number.MIN_VALUE;
+
+    let stepsText = "";
+    let stepsIndex = 1;
+
+    for (let i = 0; i < array.length; i++) {
+        stepsText += stepsIndex + ".) Third Largest: " + thirdLargest + "<br>";
+
+        if (array[i] > largest) {
+            thirdLargest = secondLargest;
+            secondLargest = largest;
+            largest = array[i];
+        } else if (array[i] > secondLargest) {
+            thirdLargest = secondLargest;
+            secondLargest = array[i];
+        } else if (array[i] > thirdLargest) {
+            thirdLargest = array[i];
+        }
+
+        stepsIndex += 1;
+    }
+
+    document.getElementById(arrayStepId).innerHTML = stepsText;
+
+    return thirdLargest;
 }
 
 // Kadane's Algorithm

@@ -32,11 +32,11 @@
             <p2>Select the algorithm:</p2>
             <br>
             <form>
-                <input type="radio" id="bubble" name= "algoSelect" value="bubble">
-                <label for="html">Bubble Sort O(n<sup>2</sup>)</label>
-                <br>
                 <input type="radio" id="alter" name= "algoSelect" value="merge">
-                <label for="css">Merge Sort O(nlog(n))</label><br>
+                <label for="html">Merge Sort O(nlog(n))</label>
+                <br>
+                <input type="radio" id="alter" name= "algoSelect" value="threeVariable">
+                <label for="html">Three Variables O(n)</label><br>
             </form>
             <br>
             <div id="ArrayInput" style="display:none;">
@@ -44,7 +44,7 @@
                 Input the array (separate with commas):
                 <br>
                 <input type="text" id="arrayNums">
-                <button onclick="runAlgorithm('thirdHighest', 'arrayNums', 'inputSize', 'showError', 'printError', 'showArray', 'showSteps', 'printhere', 'sortedArrayPrint', 'stepPrint')">Submit</button>
+                <button onclick="runAlgorithm('thirdHighest', 'arrayNums', 'inputSize', 'showError', 'printError', 'showArray', 'showSteps', 'printhere', 'sortedArrayPrint', 'stepPrint', 'showExtras')">Submit</button>
             </div>
             <br>
             <div id="showError" style="display:none;">
@@ -55,6 +55,8 @@
                 <p id="printhere"></p>
                 <p>Sorted array:</p>
                 <p id="sortedArrayPrint"></p>
+            </div>
+            <div id="showExtras" style="display:none;">
                 <p>Third largest element:</p>
                 <p id="thirdLargestPrint"></p>
             </div>
