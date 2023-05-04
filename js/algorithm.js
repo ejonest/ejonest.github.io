@@ -1,126 +1,157 @@
 window.onload = function () {
-    let slider = document.getElementById("inputSize");
-    let output = document.getElementById("inputSizeValue");
-    output.innerHTML = slider.value;
+    let slider = document.getElementById("array-size-slider");
+    let sliderValue = document.getElementById("array-size-value");
+    sliderValue.innerHTML = slider.value;
 
     slider.oninput = function () {
-        output.innerHTML = this.value;
+        sliderValue.innerHTML = this.value;
     }
 }
 
-function display(arrayFormId) {
-    let arrayForm = document.getElementById(arrayFormId);
-    if (arrayForm.style.display === "none") {
-        arrayForm.style.display = "block";
-    } else {
-        arrayForm.style.display = "none";
-    }
-}
+function runAlgorithm(page) {
+    // Reset error div.
+    document.getElementById("error-div").style.display = "none";
 
-function runAlgorithm(page, arrayFormId, arraySizeFormId, errorBoxId, errorTextId, displayBoxId, displayTextId, unsortedArrayTextID, sortedArrayTextId, sortedArrayStepId, extraDisplayBoxId) {
-    // Reset error box display.
-    var algorithmType = null;
-    var radioButton = document.getElementsByName('algoSelect');
-    for (i = 0; i < radioButton.length; i++) {
-        if (radioButton[i].checked) {
-            algorithmType = radioButton[i].value;
+    // Retrieve algorithm type.
+    let algorithmOptions = document.getElementsByName("algorithm-option");
+    let algorithmType = null;
+    for (let i = 0; i < algorithmOptions.length; i++) {
+        if (algorithmOptions[i].checked) {
+            algorithmType = algorithmOptions[i].value;
+            break;
         }
     }
-    document.getElementById(errorBoxId).style.display = "none";
 
-    // Read text from array form.
-    const arrayFormValue = document.getElementById(arrayFormId).value.split(",");
+    // Retrieve array size.
+    let arraySize = document.getElementById("array-size-slider").value;
 
-    // Read integer from size form.
-    let arraySize = parseInt(document.getElementById(arraySizeFormId).value);
+    // Validate array input.
+    let arrayFormValue = document.getElementById("array-input").value;
+    let isValidInput = /^-?\d+($|,-?\d+)*$/.test(arrayFormValue);
 
-    // Convert array form text to an array of integers.
-    let array = arrayFormValue.slice(0, arraySize).map(x => parseInt(x));
+    if (!isValidInput) {
+        logError("Invalid input. Please enter only numbers separated by commas.");
+        return;
+    }
+    arrayFormValue = arrayFormValue.split(",");
 
     // Compare array size to user size input.
     if (arrayFormValue.length != arraySize) {
-        let errorBox = document.getElementById(errorBoxId);
-        errorBox.style.display = "block";
-
-        if (arrayFormValue.length > arraySize) {
-            document.getElementById(errorTextId).innerHTML = "Received more entries than expected (Expected: " + arraySize + ", Received: " + arrayFormValue.length + ") <br>Will only use the first " + arraySize + " entries.<br>";
-        } else if (arrayFormValue.length < arraySize) {
-            document.getElementById(errorTextId).innerHTML = "Received less entries than expected (Expected: " + arraySize + ", Received: " + arrayFormValue.length + ") <br>Will use the given entries.<br>";
-            arraySize = arrayFormValue.length;
-        }
+        logError("Invalid input. Enter only " + arraySize + " numbers separated by commas.");
+        return;
     }
 
-    let displayBox = document.getElementById(displayBoxId);
-    let displayText = document.getElementById(displayTextId);
-    if (displayBox.style.display === "none") {
-        displayBox.style.display = "block";
-        displayText.style.display = "block";
-    } else {
-        displayBox.style.display = "none";
-        displayText.style.display = "none";
-    }
-    document.getElementById(unsortedArrayTextID).innerHTML = array;
+    // Retrieve array elements.
+    let array = arrayFormValue.slice(0, arraySize).map(x => parseInt(x));
 
-    let algorithmArray = null;
+    // Start performance timer.
+    let time = null;
+    let startTime = performance.now();
+    let endTime = null;
+
+    // Run algorithm.
+    let result = null;
+    let duplicateCheck = null;
+    let maxSumFormatted = "";
     switch (algorithmType) {
-        case "bubble":
-            algorithmArray = bubbleSort(array, arraySize, sortedArrayTextId, sortedArrayStepId);
+        case "bubbleSort":
+            result = bubbleSort(array);
+
+            document.getElementById("output-text-2").innerHTML = array;
+            document.getElementById("output-text-3").innerHTML = result;
             break;
-        case "merge":
-            algorithmArray = mergeSort(array, sortedArrayTextId, sortedArrayStepId);
-            if (page == "thirdHighest") {
-                document.getElementById("thirdLargestPrint").innerHTML = algorithmArray[algorithmArray.length - 3];
-                document.getElementById(extraDisplayBoxId).style.display = "block";
+        case "mergeSort":
+            mergeSortIndex = 1;
+            mergeSortSteps = "";
+            document.getElementById("output-text-2").innerHTML = array;
+            result = mergeSort(array);
+
+            if (page == "thirdLargest") {
+                document.getElementById("output-text-2").innerHTML = result[result.length - 3];
             }
-            break;
-            // changed the name from kadane to be more representaive of the algo
-            //should alter the function name as well
-        case "naiveMaxSum":
-            algorithmArray = naiveMaxSum(array, sortedArrayStepId);
-            document.getElementById("MaxSumPrint").innerHTML = algorithmArray;
+            document.getElementById("output-text-3").innerHTML = result;
             break;
         case "threeVariable":
-            algorithmArray = threeVariable(array, sortedArrayStepId);
-            displayBox.style.display = "none";
-            document.getElementById("thirdLargestPrint").innerHTML = algorithmArray;
-            document.getElementById(extraDisplayBoxId).style.display = "block";
+            duplicateCheck = new Set(array);
+            if (duplicateCheck.size != array.length) {
+                logError("Invalid input. Please enter only unique numbers.");
+                return;
+            }
+
+            result = threeVariable(array);
+            document.getElementById("output-text-2").innerHTML = result;
             break;
-        default:
-            document.getElementById(errorTextId).innerHTML = "Please select an algorithm.";
-            document.getElementById(errorBoxId).style.display = "block";
+        case "naiveMaxSum":
+            duplicateCheck = new Set(array);
+            if ((duplicateCheck.size != array.length) || array.some(number => number < 0)) {
+                logError("Invalid input. Please enter only unique positive numbers.");
+                return;
+            }
+
+            result = naiveMaxSum(array);
+            maxSumFormatted = "(0, " + (array.length - 1) + "): " + result;
+            document.getElementById("output-text-2").innerHTML = maxSumFormatted;
+
+            break;
+        case "kadaneMaxSum":
+            result = kadaneMaxSum(array);
+
+            maxSumFormatted = "(";
+            maxSumFormatted += result[result.length - 2] + ", " + result[result.length - 1] + "): ";
+            result.pop();
+            result.pop();
+            maxSumFormatted += result;
+
+            document.getElementById("output-text-2").innerHTML = maxSumFormatted;
+
             break;
     }
-    
-    document.getElementById(sortedArrayTextId).innerHTML = algorithmArray;
+
+    // End performance timer.
+    endTime = performance.now();
+    time = (endTime - startTime) * 1000;
+    document.getElementById("output-text-1").innerHTML = time + " μs";
+
+    // Display results.
+    document.getElementById("output-div").style.display = "block";
+    document.getElementById("steps-div").style.display = "block";
 }
 
-// Bubble Sort Algorithm - O(n^2)
-function bubbleSort(array, arraySize, sortedArrayTextId, sortedArrayStepId) {
-    let stepsText = "";
+function logError(message) {
+    document.getElementById("error-text").innerHTML = message;
+    document.getElementById("error-div").style.display = "block";
+    document.getElementById("output-div").style.display = "none";
+    document.getElementById("steps-div").style.display = "none";
+}
+
+// Bubble Sort Algorithm
+function bubbleSort(array) {
+    let sorted = array.slice();
+    let steps = "";
     let index = 1;
-    for (let i = 0; i < arraySize; i++) {
-        for (let j = 0; j < (arraySize - 1 - i); j++) {
-            if (array[j] > array[j + 1]) {
-                let temp = array[j];
-                array[j] = array[j + 1];
-                array[j + 1] = temp;
+
+    for (let i = 0; i < sorted.length; i++) {
+        for (let j = 0; j < (sorted.length - i - 1); j++) {
+            if (sorted[j] > sorted[j + 1]) {
+                let temp = sorted[j];
+                sorted[j] = sorted[j + 1];
+                sorted[j + 1] = temp;
             }
-            stepsText += index + ".) " + array + "<br>";
+            steps += index + ".) " + sorted + "<br><br>";
             index += 1;
         }
     }
-    document.getElementById(sortedArrayTextId).innerHTML = array;
-    document.getElementById(sortedArrayStepId).innerHTML = stepsText;
 
-    return array;
+    document.getElementById("steps-text").innerHTML = steps;
+
+    return sorted;
 }
 
-//for step output
-let stepIndexMerge = 1;
-let stepsTextMerge = "";
+// Merge Sort Algorithm
+let mergeSortIndex = 1;
+let mergeSortSteps = "";
 
-// Merge Sort Algorithm - O(nlogn)
-function mergeSort(array, sortedArrayTextId, sortedArrayStepId) {
+function mergeSort(array) {
     if (array.length <= 1) {
         return array;
     }
@@ -128,51 +159,61 @@ function mergeSort(array, sortedArrayTextId, sortedArrayStepId) {
     let middleIndex = Math.floor(array.length / 2);
     let leftArray = array.splice(0, middleIndex);
 
-    return merge(mergeSort(leftArray, sortedArrayTextId, sortedArrayStepId), mergeSort(array, sortedArrayTextId, sortedArrayStepId), sortedArrayTextId, sortedArrayStepId);
+    return mergeSortHelper(mergeSort(leftArray), mergeSort(array));
 }
 
-function merge(leftArray, rightArray, sortedArrayTextId, sortedArrayStepId) {
-    let array = []
-    stepsTextMerge += stepIndexMerge + ".) Left: " + leftArray + " Right: " + rightArray + "<br>Merge: ";
+function mergeSortHelper(leftArray, rightArray) {
+    let sorted = []
+    mergeSortSteps += mergeSortIndex + ".) Left: " + leftArray + " Right: " + rightArray + " Merge: ";
 
     while (leftArray.length && rightArray.length) {
         if (leftArray[0] < rightArray[0]) {
-            array.push(leftArray.shift());
+            sorted.push(leftArray.shift());
         } else {
-            array.push(rightArray.shift());
+            sorted.push(rightArray.shift());
         }
     }
-    array = [...array, ...leftArray, ...rightArray];
+    sorted = [...sorted, ...leftArray, ...rightArray];
 
-    for (let i = 0; array.length > i; i++) {
-        stepsTextMerge += array[i] + " ";
+    for (let i = 0; sorted.length > i; i++) {
+        mergeSortSteps += sorted[i] + " ";
     }
-    stepsTextMerge += "<br>";
+    mergeSortSteps += "<br><br>";
 
-    document.getElementById(sortedArrayTextId).innerHTML = array;
-    document.getElementById(sortedArrayStepId).innerHTML = stepsTextMerge;
-    stepIndexMerge += 1;
+    document.getElementById("steps-text").innerHTML = mergeSortSteps;
+    mergeSortIndex += 1;
 
-    return array;
+    return sorted;
 }
 
-function threeVariable(array, arrayStepId) {
+// Three Variable Algorithm
+function threeVariable(array) {
     let largest = Number.MIN_VALUE;
     let secondLargest = Number.MIN_VALUE;
     let thirdLargest = Number.MIN_VALUE;
 
-    let stepsText = "";
-    let stepsIndex = 1;
+    let steps = "";
+    let index = 1;
 
     for (let i = 0; i < array.length; i++) {
-        if (thirdLargest != Number.MIN_VALUE) {
-            stepsText += stepsIndex + ".) Third Largest: " + thirdLargest + "<br>";
+        if (largest != Number.MIN_VALUE) {
+            steps += index + ".) Current: " + array[i] + "<br> Largest: " + largest + "<br>";
         } else {
-            stepsText += stepsIndex + ".) Third Largest: NaN <br>";
+            steps += index + ".) Current: " + array[i] + "<br> Largest: NaN <br>";
         }
-        
-
-        if (array[i] > largest) {
+        if (secondLargest != Number.MIN_VALUE) {
+            steps += " Second Largest: " + secondLargest + "<br>";
+        } else {
+            steps += " Second Largest: NaN <br>";
+        }
+        if (thirdLargest != Number.MIN_VALUE) {
+            steps += " Third Largest: " + thirdLargest + "<br><br>";
+        } else {
+            steps += " Third Largest: NaN <br><br>";
+        }
+        if (i == 0) {
+            largest = array[i];
+        } else if (array[i] > largest) {
             thirdLargest = secondLargest;
             secondLargest = largest;
             largest = array[i];
@@ -181,82 +222,110 @@ function threeVariable(array, arrayStepId) {
             secondLargest = array[i];
         } else if (array[i] > thirdLargest) {
             thirdLargest = array[i];
+        } else if (secondLargest == Number.MIN_VALUE) {
+            secondLargest = array[i];
+        } else if (thirdLargest == Number.MIN_VALUE) {
+            thirdLargest == array[i];
         }
 
-        stepsIndex += 1;
+        index += 1;
     }
 
-    document.getElementById(arrayStepId).innerHTML = stepsText;
+    document.getElementById("steps-text").innerHTML = steps;
 
     return thirdLargest;
 }
 
-// Kadane's Algorithm
-function naiveMaxSum(array, arrayStepId) {
-    // var maxSubarraySum = Number.MIN_VALUE;
-    // var maxSubarrayElements = [];
-    // let stepsIndex = 1;
-    // let stepsText = ""
-    // let lastSum = maxSubarraySum;
+// Naive Max Sum Algorithm
+function naiveMaxSum(array) {
+    var maxArray = [];
+    let maxSum = array[0];
+    let tempSum = 0;
+    let end = 0;
+    let begin = 0;
 
-    // for (let i = 0; i < array.length; i++) {
-    //     let currentSubarraySum = 0;
-    //     let currentSubarrayElements = [];
-        
-    //     for (let j = i; j < array.length; j++) {
-    //         currentSubarrayElements.push(array[j]);
-    //         currentSubarraySum += array[j];
+    let steps = "";
+    let index = 1;
 
-    //         if (currentSubarraySum > maxSubarraySum) {
-    //             maxSubarraySum = currentSubarraySum;
-    //             if (lastSum < currentSubarraySum) {
-    //                 maxSubarrayElements = currentSubarrayElements;
-    //             }
-    //             // stepsText += stepsIndex + ".) Maximum Contiguous Sum: " + maxSubarraySum + "<br>" + 
-    //             // "Max Array: " + maxSubarrayElements + " || Current Array: " + maxSubarrayElements + "<br><br>";
-    //         }
-    //         if (stepsIndex <= array.length) {
-    //             stepsText += stepsIndex + ".) Maximum Contiguous Sum: " + maxSubarraySum + "<br>" + 
-    //                 "Max Array: " + lastSum/*maxSubarrayElements*/ + " || Current Array: " + currentSubarraySum/*maxSubarrayElements*/ + "<br><br>";
-    //             stepsIndex += 1;
-    //         }
-    //         lastSum = currentSubarraySum;
-    //     }
-    // }
-
-    // document.getElementById(arrayStepId).innerHTML = stepsText;
-
-    // return maxSubarrayElements;
-    var best_nums = [];
-    let max_sum = array[0];
-    let temp_sum = 0;
-    let e = 0;
-    let b = 0;
-    let stepsText = "";
-    let stepsIndex = 1;
-    let maxArray = [];
-    let tempArray = [];
-
-    for(let i = 0; i < array.length; ++i) {
+    for (let i = 0; i < array.length; ++i) {
         let tempArray = [];
-        for(let j = i; j < array.length; ++j) {
-            temp_sum += array[j];
+        for (let j = i; j < array.length; ++j) {
+            tempSum += array[j];
             tempArray.push(array[j]);
-            if (temp_sum > max_sum) {
-                max_sum = temp_sum;
-                e = i;
-                b = j;
-                maxArray = tempArray;
+            if (tempSum > maxSum) {
+                end = i;
+                begin = j;
+                maxSum = tempSum;
             }
-            stepsText += stepsIndex + ".) Maximum Contiguous Sum: " + max_sum + "<br>" + 
+            steps += index + ".) Maximum Contiguous Sum: " + maxSum + "<br>" +
                 /*"Max Array: " + maxArray + " || */ "Current Array: " + tempArray + "<br><br>";
-            stepsIndex += 1;
+            index += 1;
         }
-        temp_sum = 0;
+        tempSum = 0;
     }
-    for (let i = e; i <= b; ++i) {
-        best_nums.push(array[i]);
+
+    for (let i = end; i <= begin; ++i) {
+        maxArray.push(array[i]);
     }
-    document.getElementById(arrayStepId).innerHTML = stepsText;
-    return best_nums;
+
+    document.getElementById("steps-text").innerHTML = steps;
+
+    return maxArray;
+}
+
+// Kadane's Max Sum Algorithm
+function kadaneMaxSum(array) {
+    let maxArray = [];
+    let maxSoFar = array[0];
+    let maxEndingHere = 0;
+    let end = 0;
+    let begin = 0;
+
+    let steps = "";
+    let index = 1;
+
+    if (maxSoFar > 0) {end = 1;}
+    for (var i = 0; i < array.length; i++) {
+        maxEndingHere = maxEndingHere + array[i];
+        
+        if (maxSoFar < maxEndingHere) {
+            maxSoFar = maxEndingHere;
+            end = i + 1;
+        }
+ 
+        if (maxEndingHere < 0) {
+            maxEndingHere = 0;
+            // b = i + 1;
+            if (array[i] < 0 && maxSoFar < 0) {
+                begin = i + 1;
+            }
+        }
+
+        var tempArray = array.slice(0, i+1);
+        steps += index + ".) Maximum Contiguous Sum: " + maxSoFar + "<br>" + "Current Array: " + tempArray + "<br><br>";
+        index += 1;
+    }
+
+    // // Get maxArray
+    // maxArray = array.slice(b, e);
+    if (maxEndingHere == 0) {
+        // maxArray = [0];
+        begin = 0;
+        end = 0;
+        maxArray.push(0);
+        maxArray.push(begin);
+        maxArray.push(end);
+    } else {
+        // Get maxArray
+        maxArray.push(array.slice(begin, end));
+        // maxArray = array.slice(b, e);
+        end -= 1;
+        maxArray.push(begin);
+        maxArray.push(end);
+    }
+    
+    // Print steps to the console
+    document.getElementById("steps-text").innerHTML = steps;
+    
+    return maxArray;
 }
