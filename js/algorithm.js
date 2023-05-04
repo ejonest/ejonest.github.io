@@ -22,27 +22,32 @@ function runAlgorithm(page) {
         }
     }
 
+    // Check if no algorithm is selected.
+    if (algorithmType == null) {
+        logError("Please select an algorithm.");
+        return;
+    }
+
     // Retrieve array size.
     let arraySize = document.getElementById("array-size-slider").value;
 
+    // Retrieve array input.
+    let array = document.getElementById("array-input").value;
+
     // Validate array input.
-    let arrayFormValue = document.getElementById("array-input").value;
-    let isValidInput = /^-?\d+($|,-?\d+)*$/.test(arrayFormValue);
+    let isValidInput = /^-?\d+($|,-?\d+)*$/.test(array);
 
     if (!isValidInput) {
         logError("Invalid input. Please enter only numbers separated by commas.");
         return;
     }
-    arrayFormValue = arrayFormValue.split(",");
+    array = array.split(",");
 
     // Compare array size to user size input.
-    if (arrayFormValue.length != arraySize) {
+    if (array.length != arraySize) {
         logError("Invalid input. Enter only " + arraySize + " numbers separated by commas.");
         return;
     }
-
-    // Retrieve array elements.
-    let array = arrayFormValue.slice(0, arraySize).map(x => parseInt(x));
 
     // Start performance timer.
     let time = null;
@@ -53,6 +58,8 @@ function runAlgorithm(page) {
     let result = null;
     let duplicateCheck = null;
     let maxSumFormatted = "";
+
+    console.log(array);
     switch (algorithmType) {
         case "bubbleSort":
             result = bubbleSort(array);
@@ -63,13 +70,17 @@ function runAlgorithm(page) {
         case "mergeSort":
             mergeSortIndex = 1;
             mergeSortSteps = "";
-            document.getElementById("output-text-2").innerHTML = array;
+            let arrayCopy = array.slice();
             result = mergeSort(array);
 
             if (page == "thirdLargest") {
                 document.getElementById("output-text-2").innerHTML = result[result.length - 3];
             }
-            document.getElementById("output-text-3").innerHTML = result;
+            else {
+                document.getElementById("output-text-2").innerHTML = arrayCopy;
+                document.getElementById("output-text-3").innerHTML = result;
+            }
+
             break;
         case "threeVariable":
             duplicateCheck = new Set(array);

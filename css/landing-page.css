@@ -42,6 +42,8 @@ p4 {
     font-weight: 500;
     font-size: 30px;
     line-height: 40px;
+    padding-left: 60px;
+    padding-right: 60px;
 }
 
 img {
