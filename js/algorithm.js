@@ -28,11 +28,14 @@ function runAlgorithm(page) {
         return;
     }
 
-    // Retrieve array size.
-    let arraySize = document.getElementById("array-size-slider").value;
-
     // Retrieve array input.
-    let array = document.getElementById("array-input").value;
+    // let array = document.getElementById("array-input").value
+    const array = [];
+    var inputNums = document.getElementById("array-input").value;
+    const textArray = inputNums.split(",");
+    for (let i = 0; i < textArray.length; i++) {
+        array[i] = parseInt(textArray[i]);
+    }
 
     // Validate array input.
     let isValidInput = /^-?\d+($|,-?\d+)*$/.test(array);
@@ -41,8 +44,10 @@ function runAlgorithm(page) {
         logError("Invalid input. Please enter only numbers separated by commas.");
         return;
     }
-    array = array.split(",");
+    // array = array.split(",");
 
+    // Retrieve array size.
+    let arraySize = document.getElementById("array-size-slider").value;
     // Compare array size to user size input.
     if (array.length != arraySize) {
         logError("Invalid input. Enter only " + arraySize + " numbers separated by commas.");
@@ -100,7 +105,7 @@ function runAlgorithm(page) {
             }
 
             result = naiveMaxSum(array);
-            maxSumFormatted = "(0, " + (array.length - 1) + "): " + result;
+            maxSumFormatted = "(0, " + (result.length - 1) + "): " + result;
             document.getElementById("output-text-2").innerHTML = maxSumFormatted;
 
             break;
@@ -250,6 +255,7 @@ function threeVariable(array) {
 // Naive Max Sum Algorithm
 function naiveMaxSum(array) {
     var maxArray = [];
+    // array = [87,8,7];
     let maxSum = array[0];
     let tempSum = 0;
     let end = 0;
@@ -286,6 +292,7 @@ function naiveMaxSum(array) {
 
 // Kadane's Max Sum Algorithm
 function kadaneMaxSum(array) {
+    // array = [87,8,7];
     let maxArray = [];
     let maxSoFar = array[0];
     let maxEndingHere = 0;
@@ -298,17 +305,20 @@ function kadaneMaxSum(array) {
     if (maxSoFar > 0) {end = 1;}
     for (var i = 0; i < array.length; i++) {
         maxEndingHere = maxEndingHere + array[i];
-        
+        // print("MEH: " + maxEndingHere);
+        // print("MSF: " + maxSoFar);
+        // print();
         if (maxSoFar < maxEndingHere) {
             maxSoFar = maxEndingHere;
             end = i + 1;
         }
- 
+
         if (maxEndingHere < 0) {
-            maxEndingHere = 0;
+            // maxEndingHere = 0;
             // b = i + 1;
             if (array[i] < 0 && maxSoFar < 0) {
                 begin = i + 1;
+                maxEndingHere = 0;
             }
         }
 
@@ -334,7 +344,6 @@ function kadaneMaxSum(array) {
         maxArray.push(begin);
         maxArray.push(end);
     }
-    
     // Print steps to the console
     document.getElementById("steps-text").innerHTML = steps;
     
