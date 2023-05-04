@@ -212,21 +212,7 @@ function threeVariable(array) {
     let index = 1;
 
     for (let i = 0; i < array.length; i++) {
-        if (largest != Number.MIN_VALUE) {
-            steps += index + ".) Current: " + array[i] + "<br> Largest: " + largest + "<br>";
-        } else {
-            steps += index + ".) Current: " + array[i] + "<br> Largest: NaN <br>";
-        }
-        if (secondLargest != Number.MIN_VALUE) {
-            steps += " Second Largest: " + secondLargest + "<br>";
-        } else {
-            steps += " Second Largest: NaN <br>";
-        }
-        if (thirdLargest != Number.MIN_VALUE) {
-            steps += " Third Largest: " + thirdLargest + "<br><br>";
-        } else {
-            steps += " Third Largest: NaN <br><br>";
-        }
+       
         if (i == 0) {
             largest = array[i];
         } else if (array[i] > largest) {
@@ -242,6 +228,21 @@ function threeVariable(array) {
             secondLargest = array[i];
         } else if (thirdLargest == Number.MIN_VALUE) {
             thirdLargest == array[i];
+        }
+        if (largest != Number.MIN_VALUE) {
+            steps += index + ".) Current: " + array[i] + "<br> Largest: " + largest + "<br>";
+        } else {
+            steps += index + ".) Current: " + array[i] + "<br> Largest: NaN <br>";
+        }
+        if (secondLargest != Number.MIN_VALUE) {
+            steps += " Second Largest: " + secondLargest + "<br>";
+        } else {
+            steps += " Second Largest: NaN <br>";
+        }
+        if (thirdLargest != Number.MIN_VALUE) {
+            steps += " Third Largest: " + thirdLargest + "<br><br>";
+        } else {
+            steps += " Third Largest: NaN <br><br>";
         }
 
         index += 1;
